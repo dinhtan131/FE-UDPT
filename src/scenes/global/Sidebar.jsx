@@ -15,7 +15,6 @@ import TrackChanges from "@mui/icons-material/TrackChanges";
 import Check from "@mui/icons-material/Check";
 import VolunteerActivism from "@mui/icons-material/VolunteerActivism";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
-import SyncAltIcon from "@mui/icons-material/SyncAlt";
 
 import CurrencyExchange from "@mui/icons-material/CurrencyExchange";
 
@@ -115,14 +114,6 @@ const Sidebar = () => {
               title="Dashboard"
               to="/admin"
               icon={<HomeOutlinedIcon />}
-              selected={selected}
-              setSelected={setSelected}
-            />
-
-            <Item
-              title="My TimeSheet"
-              to="/admin/my_time_sheet"
-              icon={<AccessTimeIcon />}
               selected={selected}
               setSelected={setSelected}
             />
