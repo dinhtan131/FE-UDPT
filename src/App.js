@@ -31,7 +31,6 @@ import Check from "./scenes/check_in-out";
 import AddParticipation from "./scenes/add_participation";
 import AddTimeSheet from "./scenes/add_time_sheet";
 import MyTimeSheet from "./scenes/my_time_sheet";
-import UpdateStatusTimeSheet from "./scenes/update_timesheet";
 
 function App() {
   const [theme, colorMode] = useMode();
@@ -84,10 +83,6 @@ function App() {
               <Route path="/admin/work_log" element={<WorkLog />} />
               <Route path="/admin/my_time_sheet" element={<MyTimeSheet />} />
               <Route path="/admin/time_sheet" element={<TimeSheet />} />
-              <Route
-                path="/admin/update_status_timesheet"
-                element={<UpdateStatusTimeSheet />}
-              />
 
               {/**/}
               <Route path="/admin/my_request" element={<MyRequest />} />
