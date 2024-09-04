@@ -31,6 +31,7 @@ import Check from "./scenes/check_in-out";
 import AddParticipation from "./scenes/add_participation";
 import AddTimeSheet from "./scenes/add_time_sheet";
 import MyTimeSheet from "./scenes/my_time_sheet";
+import UpdateStatusTimeSheet from "./scenes/update_timesheet";
 
 function App() {
   const [theme, colorMode] = useMode();
@@ -63,7 +64,10 @@ function App() {
 
               {/* Các route dành cho admin */}
               <Route path="/admin" element={<Dashboard />} />
-              <Route path="/admin/change_password" element={<ChangePassword />} />
+              <Route
+                path="/admin/change_password"
+                element={<ChangePassword />}
+              />
               <Route path="/admin/team" element={<Team />} />
               <Route path="/admin/activities" element={<Activities />} />
               <Route path="/admin/add_user" element={<AddUser />} />
@@ -73,34 +77,50 @@ function App() {
               <Route path="/admin/add_voucher" element={<AddVoucher />} />
               <Route path="/admin/exchange" element={<Exchange />} />
               <Route path="/admin/point_transfer" element={<PointTransfer />} />
-              <Route path="/admin/add_point_transfer" element={<AddPoinTrasnfer />} />
+              <Route
+                path="/admin/add_point_transfer"
+                element={<AddPoinTrasnfer />}
+              />
               <Route path="/admin/work_log" element={<WorkLog />} />
+              <Route path="/admin/my_time_sheet" element={<MyTimeSheet />} />
               <Route path="/admin/time_sheet" element={<TimeSheet />} />
-              <Route path="/admin/add_time_sheet" element={<AddTimeSheet />} />
+              <Route
+                path="/admin/update_status_timesheet"
+                element={<UpdateStatusTimeSheet />}
+              />
 
               {/**/}
               <Route path="/admin/my_request" element={<MyRequest />} />
               <Route path="/admin/my_exchange" element={<MyExchange />} />
               <Route path="/admin/check" element={<Check />} />
-              <Route path="/admin/my_time_sheet" element={<MyTimeSheet />} />
 
               {/* Các route dành cho employee */}
               <Route path="/employee" element={<Dashboard />} />
-              <Route path="/employee/change_password" element={<ChangePassword />} />
+              <Route
+                path="/employee/change_password"
+                element={<ChangePassword />}
+              />
               <Route path="/employee/calendar" element={<Calendar />} />
               <Route path="/employee/add_request" element={<AddRequest />} />
               <Route path="/employee/add_activity" element={<AddActivity />} />
               <Route path="/employee/my_request" element={<MyRequest />} />
               <Route path="/employee/my_exchange" element={<MyExchange />} />
-              <Route path="/employee/my_participation" element={<MyParticipation />} />
+              <Route
+                path="/employee/my_participation"
+                element={<MyParticipation />}
+              />
               <Route path="/employee/my_check_in" element={<MyCheckIn />} />
               <Route path="/employee/check" element={<Check />} />
-              <Route path="/employee/participation" element={<AddParticipation />} />
+              <Route
+                path="/employee/participation"
+                element={<AddParticipation />}
+              />
               <Route path="/employee/add_exchange" element={<AddExchange />} />
-              <Route path="/employee/add_time_sheet" element={<AddTimeSheet />} />
+              <Route
+                path="/employee/add_time_sheet"
+                element={<AddTimeSheet />}
+              />
               <Route path="/employee/my_time_sheet" element={<MyTimeSheet />} />
-
-
             </Routes>
           </main>
         </div>

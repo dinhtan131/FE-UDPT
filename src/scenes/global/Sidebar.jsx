@@ -4,7 +4,7 @@ import { Box, IconButton, Typography, useTheme } from "@mui/material";
 import { Link } from "react-router-dom";
 import "react-pro-sidebar/dist/css/styles.css";
 import { tokens } from "../../theme";
-import ChangeCircleOutlined from "@mui/icons-material/ChangeCircleOutlined"
+import ChangeCircleOutlined from "@mui/icons-material/ChangeCircleOutlined";
 import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
 import PeopleOutlinedIcon from "@mui/icons-material/PeopleOutlined";
 import RequestPageOutlined from "@mui/icons-material/RequestPageOutlined";
@@ -14,9 +14,10 @@ import PointOfSale from "@mui/icons-material/Money";
 import TrackChanges from "@mui/icons-material/TrackChanges";
 import Check from "@mui/icons-material/Check";
 import VolunteerActivism from "@mui/icons-material/VolunteerActivism";
+import AccessTimeIcon from "@mui/icons-material/AccessTime";
+import SyncAltIcon from "@mui/icons-material/SyncAlt";
 
 import CurrencyExchange from "@mui/icons-material/CurrencyExchange";
-
 
 const Item = ({ title, to, icon, selected, setSelected }) => {
   const theme = useTheme();
@@ -103,7 +104,7 @@ const Sidebar = () => {
               </Box>
               <Box textAlign="center">
                 <Typography variant="h5" color={colors.greenAccent[500]}>
-                 Admin
+                  Admin
                 </Typography>
               </Box>
             </Box>
@@ -117,6 +118,15 @@ const Sidebar = () => {
               selected={selected}
               setSelected={setSelected}
             />
+
+            <Item
+              title="My TimeSheet"
+              to="/admin/my_time_sheet"
+              icon={<AccessTimeIcon />}
+              selected={selected}
+              setSelected={setSelected}
+            />
+
             <Item
               title="Change Password"
               to="/admin/change_password"
@@ -124,6 +134,7 @@ const Sidebar = () => {
               selected={selected}
               setSelected={setSelected}
             />
+
             {/*
             <Item
               title="My Request"
@@ -161,6 +172,23 @@ const Sidebar = () => {
               selected={selected}
               setSelected={setSelected}
             />
+
+            <Item
+              title="Timesheet Management"
+              to="/admin/time_sheet"
+              icon={<AccessTimeIcon />}
+              selected={selected}
+              setSelected={setSelected}
+            />
+
+            <Item
+              title="Update Status"
+              to="/admin/update_timesheet"
+              icon={<SyncAltIcon />}
+              selected={selected}
+              setSelected={setSelected}
+            />
+
             <Item
               title="Add User"
               to="/admin/add_user"
@@ -168,7 +196,6 @@ const Sidebar = () => {
               selected={selected}
               setSelected={setSelected}
             />
-            
 
             <Typography
               variant="h6"
@@ -191,7 +218,7 @@ const Sidebar = () => {
               selected={selected}
               setSelected={setSelected}
             />
-            
+
             <Typography
               variant="h6"
               color={colors.grey[300]}
