@@ -182,14 +182,6 @@ const Sidebar = () => {
             />
 
             <Item
-              title="Update Status"
-              to="/admin/update_status_timesheet"
-              icon={<SyncAltIcon />}
-              selected={selected}
-              setSelected={setSelected}
-            />
-
-            <Item
               title="Add User"
               to="/admin/add_user"
               icon={<AddOutlined />}
