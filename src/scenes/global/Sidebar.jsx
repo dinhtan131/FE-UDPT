@@ -183,7 +183,7 @@ const Sidebar = () => {
 
             <Item
               title="Update Status"
-              to="/admin/update_timesheet"
+              to="/admin/update_status_timesheet"
               icon={<SyncAltIcon />}
               selected={selected}
               setSelected={setSelected}

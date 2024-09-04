@@ -1,81 +1,146 @@
 import React, { useState, useEffect } from "react";
 import {
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  Paper,
-  Typography,
   Box,
+  Button,
+  useTheme,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  TextField,
 } from "@mui/material";
-import { fetchTimeSheetData } from "../../data/mockData";
+import { DataGrid } from "@mui/x-data-grid";
+import { tokens } from "../../theme";
+import Header from "../../components/Header";
+import { fetchTimeSheetData, updateTimesheetStatus } from "../../data/mockData";
 
 const TimeSheetDashboard = () => {
-  const [timeSheets, setTimeSheets] = useState([]);
+  const theme = useTheme();
+  const colors = tokens(theme.palette.mode);
+  const [data, setData] = useState([]);
+  const [open, setOpen] = useState(false);
+  const [selected, setSelectedTimesheet] = useState(null);
 
   useEffect(() => {
-    const getTimeSheets = async () => {
-      const data = await fetchTimeSheetData();
-      setTimeSheets(data);
+    const getData = async () => {
+      const timesheet_data = await fetchTimeSheetData();
+      setData(timesheet_data);
     };
 
-    getTimeSheets();
+    getData();
   }, []);
+
+  const handleUpdate = async (data_update) => {
+    const updatedData = await updateTimesheetStatus(
+      data_update.id,
+      data_update.status
+    );
+    if (updatedData) {
+      setData(
+        data.map((timesheet) =>
+          timesheet.id === data_update.id ? updatedData : timesheet
+        )
+      );
+      setOpen(false);
+    }
+  };
+
+  const handleEditClick = (timesheet) => {
+    setSelectedTimesheet(timesheet);
+    setOpen(true);
+  };
+
+  const handleInputChange = (e) => {
+    setSelectedTimesheet({
+      ...selected,
+      [e.target.name]: e.target.value,
+    });
+    console.log(e.target.value);
+  };
+
+  const columns = [
+    { field: "id", headerName: "User ID" },
+    {
+      field: "status",
+      headerName: "Status",
+      flex: 0.5,
+    },
+    {
+      field: "actions",
+      headerName: "Actions",
+      flex: 1,
+      renderCell: (params) => (
+        <Box>
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={() => handleEditClick(params.row)}
+            sx={{ marginRight: 1 }}
+          >
+            Edit
+          </Button>
+        </Box>
+      ),
+    },
+  ];
 
   return (
     <Box m="20px">
-      <Typography variant="h4" mb={2} color="#48D1CC">
-        Timesheet Overview
-      </Typography>
+      <Header title="Update Status" subtitle="Update Status for TimeSheet" />
+      <Box
+        m="40px 0 0 0"
+        height="75vh"
+        sx={{
+          "& .MuiDataGrid-root": {
+            border: "none",
+          },
+          "& .MuiDataGrid-cell": {
+            borderBottom: "none",
+          },
+          "& .name-column--cell": {
+            color: colors.greenAccent[300],
+          },
+          "& .MuiDataGrid-columnHeaders": {
+            backgroundColor: colors.blueAccent[700],
+            borderBottom: "none",
+          },
+          "& .MuiDataGrid-virtualScroller": {
+            backgroundColor: colors.primary[400],
+          },
+          "& .MuiDataGrid-footerContainer": {
+            borderTop: "none",
+            backgroundColor: colors.blueAccent[700],
+          },
+          "& .MuiCheckbox-root": {
+            color: `${colors.greenAccent[200]} !important`,
+          },
+        }}
+      >
+        <DataGrid checkboxSelection rows={data} columns={columns} />
+      </Box>
 
-      <TableContainer component={Paper}>
-        <Table>
-          <TableHead>
-            <TableRow>
-              <TableCell>User ID</TableCell>
-              <TableCell>Monday</TableCell>
-              <TableCell>Tuesday</TableCell>
-              <TableCell>Wednesday</TableCell>
-              <TableCell>Thursday</TableCell>
-              <TableCell>Friday</TableCell>
-              <TableCell>Saturday</TableCell>
-              <TableCell>Sunday</TableCell>
-              <TableCell>Status</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {timeSheets.map((sheet) => (
-              <TableRow key={sheet.id}>
-                <TableCell>{sheet.user_id}</TableCell>
-                <TableCell>
-                  {sheet.current_value.monday.is_leave ? "Leave" : "Work"}
-                </TableCell>
-                <TableCell>
-                  {sheet.current_value.tuesday.is_leave ? "Leave" : "Work"}
-                </TableCell>
-                <TableCell>
-                  {sheet.current_value.wednesday.is_leave ? "Leave" : "Work"}
-                </TableCell>
-                <TableCell>
-                  {sheet.current_value.thursday.is_leave ? "Leave" : "Work"}
-                </TableCell>
-                <TableCell>
-                  {sheet.current_value.friday.is_leave ? "Leave" : "Work"}
-                </TableCell>
-                <TableCell>
-                  {sheet.current_value.saturday.is_leave ? "Leave" : "Work"}
-                </TableCell>
-                <TableCell>
-                  {sheet.current_value.sunday.is_leave ? "Leave" : "Work"}
-                </TableCell>
-                <TableCell>{sheet.status}</TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
+      {/* Dialog for Editing */}
+      <Dialog open={open} onClose={() => setOpen(false)}>
+        <DialogTitle>Edit Timesheet Status</DialogTitle>
+        <DialogContent>
+          <TextField
+            margin="dense"
+            label="Status"
+            name="status"
+            value={selected?.status || ""}
+            onChange={handleInputChange}
+            fullWidth
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setOpen(false)} color="secondary">
+            Cancel
+          </Button>
+          <Button onClick={() => handleUpdate(selected)} color="secondary">
+            Save
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Box>
   );
 };
