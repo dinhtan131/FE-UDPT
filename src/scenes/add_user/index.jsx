@@ -7,7 +7,7 @@ import { createUser } from "../../data/mockData"; // Import the createUser funct
 
 const NewUserForm = () => {
   const isNonMobile = useMediaQuery("(min-width:600px)");
-
+  
   const handleFormSubmit = async (values, { resetForm }) => {
     console.log("Form values:", values); // Log form values
     try {
@@ -21,9 +21,10 @@ const NewUserForm = () => {
       if (createdUser) {
         console.log("User created successfully:", createdUser);
         alert('User created successfully!');
-        resetForm(); // Reset form fields after successful submission
+        resetForm();
       } else {
         console.error("Failed to create user");
+        resetForm();
         alert('Failed to create user!');
       }
     } catch (error) {
