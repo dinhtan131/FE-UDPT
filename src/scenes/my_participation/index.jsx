@@ -65,7 +65,7 @@ const UserParticipationsDashboard = () => {
       </Typography>
 
       {participations.length === 0 ? (
-        <Typography variant="h6" color="black">No participations available</Typography>
+        <Typography variant="h6" color="white">No participations available</Typography>
       ) : (
         <Grid container spacing={3}>
           {participations.map((participation) => (
