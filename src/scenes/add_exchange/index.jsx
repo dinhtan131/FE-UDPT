@@ -41,8 +41,10 @@ const ManageVouchers = () => {
   
       if (response) {
         setExchangeSuccess(`Voucher ${id} exchanged successfully!`);
+        alert('Voucher exchanged successfully!');
       } else {
         setExchangeSuccess('Exchange failed. Please try again.');
+        alert('Exchange failed. Please try again.');
       }
     };
   
