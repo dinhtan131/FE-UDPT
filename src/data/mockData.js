@@ -403,7 +403,6 @@ export const fetchTeamData = async (page = 1, limit = 10) => {
 //Create new user
 export const createUser = async (userData) => {
   try {
-    // Retrieve the access token from local storage
     const accessToken = localStorage.getItem("accessToken");
 
     if (!accessToken) {
@@ -414,23 +413,33 @@ export const createUser = async (userData) => {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${accessToken}`, // Include the access token in the Authorization header
+        Authorization: `Bearer ${accessToken}`,
       },
       body: JSON.stringify(userData),
     });
 
-    if (!response.ok) {
-      throw new Error("Failed to create user");
+    console.log("Full response:", response); // Log full response to debug
+
+    // Check if the response is in the 200-299 range
+    if (!response.ok && response.status !== 201) {
+      throw new Error(`Failed to create user. Status code: ${response.status}`);
+    }
+
+    // If there's no content in the response (204 No Content), assume success
+    if (response.status === 204) {
+      return { message: "User created successfully, but no response data" };
     }
 
     const result = await response.json();
-    console.log("API response:", result); // Log the response for debugging
-    return result.data; // Assuming the API response has a 'data' key
+    console.log("API response:", result); // Log the parsed JSON
+
+    // If the API doesn't return the expected 'data' key, modify this as needed
+    return result.data || result; // Return data or full result as a fallback
   } catch (error) {
     console.error("Error creating user:", error);
-    return null; // Return null in case of error
+    return null;
   }
-};
+}
 
 //Delete User
 export const deleteUser = async (userId) => {
