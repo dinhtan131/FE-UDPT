@@ -89,11 +89,13 @@ const Team = () => {
   };
 
   const handleInputChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
+    const { name, value } = e.target;
+    setSelectedUser((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }));
   };
+  
 
   const columns = [
     { field: "id", headerName: "ID" },
