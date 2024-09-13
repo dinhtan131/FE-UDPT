@@ -17,6 +17,7 @@ import OutputOutlined from "@mui/icons-material/OutputOutlined";
 import UploadTwoTone from "@mui/icons-material/LocalActivityOutlined";
 import CurrencyExchange from "@mui/icons-material/CurrencyExchange";
 import CheckroomOutlined from "@mui/icons-material/CheckCircle";
+import CalendarMonthOutlined from "@mui/icons-material/CalendarMonthOutlined";
 
 
 const Item = ({ title, to, icon, selected, setSelected }) => {
@@ -134,13 +135,7 @@ const Sidebar1 = () => {
             >
               Personal Management
             </Typography>
-            <Item
-              title="Calendar"
-              to="/employee/add_time_sheet"
-              icon={<CalendarTodayOutlinedIcon />}
-              selected={selected}
-              setSelected={setSelected}
-            />
+            
             <Item
               title="Check in-out"
               to="/employee/check"
@@ -176,10 +171,11 @@ const Sidebar1 = () => {
               selected={selected}
               setSelected={setSelected}
             />
+            
             <Item
               title="My Time Sheet"
               to="/employee/my_time_sheet"
-              icon={<CheckroomOutlined />}
+              icon={<CalendarMonthOutlined />}
               selected={selected}
               setSelected={setSelected}
             />
@@ -198,13 +194,6 @@ const Sidebar1 = () => {
               setSelected={setSelected}
             />
             <Item
-              title="Update Profile"
-              to="/employee/update_profile"
-              icon={<UpdateOutlined />}
-              selected={selected}
-              setSelected={setSelected}
-            />
-            <Item
               title="Join Activities"
               to="/employee/participation"
               icon={<UploadTwoTone />}
@@ -215,6 +204,13 @@ const Sidebar1 = () => {
               title="Voucher Exchange"
               to="/employee/add_exchange"
               icon={<CurrencyExchange />}
+              selected={selected}
+              setSelected={setSelected}
+            />
+            <Item
+              title="Create Time Sheet"
+              to="/employee/add_time_sheet"
+              icon={<CalendarTodayOutlinedIcon />}
               selected={selected}
               setSelected={setSelected}
             />
