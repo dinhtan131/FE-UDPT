@@ -51,6 +51,7 @@ const ManageTickets = () => {
   };
   const columns = [
     { field: "id", headerName: "ID" },
+    { field: "user_id", headerName: "User ID" },
     {
       field: "type",
       headerName: "Type",
