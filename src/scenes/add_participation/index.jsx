@@ -37,13 +37,17 @@ useEffect(() => {
       activity_id: activityId,
     };
   
-    const response = await createParticipation(participationData);
-    
-    if (response) {
-      console.log("Successfully joined the activity!");
-      // Optionally, you can refresh the activities list or display a success message
-    } else {
-      console.error("Failed to join the activity.");
+    try {
+      const response = await createParticipation(participationData);
+      
+      if (response) {
+        alert('Join Successful!'); // Hiển thị thông báo thành công
+      } else {
+        alert('Join Error.'); // Hiển thị thông báo lỗi
+      }
+    } catch (error) {
+      console.error("Error joining activity:", error);
+      alert('Join Error.'); // Hiển thị thông báo lỗi khi có lỗi xảy ra
     }
   };
   
