@@ -63,7 +63,7 @@ const UserTicketsDashboard = () => {
       </Typography>
 
       {tickets.length === 0 ? (
-        <Typography variant="h6" color="black">No tickets available</Typography>
+        <Typography variant="h6" color="white">No tickets available</Typography>
       ) : (
         <Grid container spacing={3}>
           {tickets.map((ticket) => (
