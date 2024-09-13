@@ -9,18 +9,22 @@ const ManageVoucherExchange = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const [data, setData] = useState([]);
+  const [page, setPage] = useState(0); // Trang hiện tại
+const [pageSize, setPageSize] = useState(10); // Số lượng bản ghi trên mỗi trang
+const [rowCount, setRowCount] = useState(0); // Tổng số bản ghi
+
   const [selectedExchange, setSelectedExchange] = useState(null);
   const [viewOpen, setViewOpen] = useState(false);
-
   useEffect(() => {
     const getData = async () => {
-      const voucherExchangesData = await fetchVoucherExchangesData();
-      setData(voucherExchangesData);
+      const voucherExchangesData = await fetchVoucherExchangesData(page + 1, pageSize); // Gọi API với phân trang
+      setData(voucherExchangesData.users); // Cập nhật danh sách người dùng
+      setRowCount(voucherExchangesData.total); // Cập nhật tổng số bản ghi
     };
-
+  
     getData();
-  }, []);
-
+  }, [page, pageSize]); // Gọi lại khi page hoặc pageSize thay đổi
+  
 
   const handleViewClick = async (id) => {
     const exchange = await fetchVoucherExchangeById(id);
@@ -102,7 +106,18 @@ const ManageVoucherExchange = () => {
           },
         }}
       >
-        <DataGrid checkboxSelection rows={data} columns={columns} />
+        <DataGrid
+      checkboxSelection
+      rows={data}
+      columns={columns}
+      pageSize={pageSize} // Số bản ghi trên mỗi trang
+      rowsPerPageOptions={[5, 10, 25]} // Các tùy chọn số bản ghi
+      rowCount={rowCount} // Tổng số bản ghi
+      paginationMode="server" // Sử dụng phân trang từ server
+      onPageChange={(newPage) => setPage(newPage)} // Cập nhật khi trang thay đổi
+      onPageSizeChange={(newPageSize) => setPageSize(newPageSize)} // Cập nhật số bản ghi trên mỗi trang
+    />
+    
       </Box>
 
       {/* Dialog for Viewing */}
