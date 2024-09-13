@@ -1,9 +1,24 @@
-import React, { useState, useEffect } from 'react';
-import { Box, Button, useTheme, Dialog, DialogActions, DialogContent, DialogTitle, TextField } from "@mui/material";
+import React, { useState, useEffect } from "react";
+import {
+  Box,
+  Button,
+  useTheme,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  TextField,
+} from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import { tokens } from "../../theme";
 import Header from "../../components/Header";
-import { fetchActivitiesData, updateActivity, fetchActivityById, fetchList } from "../../data/mockData"; // Import the fetchList function
+import {
+  fetchUserById,
+  fetchActivitiesData,
+  updateActivity,
+  fetchActivityById,
+  fetchList,
+} from "../../data/mockData"; // Import the fetchList function
 
 const ManageActivities = () => {
   const theme = useTheme();
@@ -11,15 +26,13 @@ const ManageActivities = () => {
   const [data, setData] = useState([]);
   const [open, setOpen] = useState(false);
   const [page, setPage] = useState(0); // Trang hiện tại
-const [pageSize, setPageSize] = useState(10); // Số lượng bản ghi trên mỗi trang
-const [rowCount, setRowCount] = useState(0); // Tổng số bản ghi
+  const [pageSize, setPageSize] = useState(10); // Số lượng bản ghi trên mỗi trang
+  const [rowCount, setRowCount] = useState(0); // Tổng số bản ghi
 
   const [selectedActivity, setSelectedActivity] = useState(null);
   const [viewOpen, setViewOpen] = useState(false);
   const [listOpen, setListOpen] = useState(false); // State to manage the list dialog
   const [participants, setParticipants] = useState([]); // State to store participant data
-
-
 
   useEffect(() => {
     const getData = async () => {
@@ -27,14 +40,21 @@ const [rowCount, setRowCount] = useState(0); // Tổng số bản ghi
       setData(activitiesData.users); // Cập nhật danh sách người dùng
       setRowCount(activitiesData.total); // Cập nhật tổng số bản ghi
     };
-  
+
     getData();
   }, [page, pageSize]); // Gọi lại khi page hoặc pageSize thay đổi
-  
+
   const handleUpdate = async (updatedActivity) => {
-    const updatedData = await updateActivity(updatedActivity.id, updatedActivity);
+    const updatedData = await updateActivity(
+      updatedActivity.id,
+      updatedActivity
+    );
     if (updatedData) {
-      setData(data.map((activity) => (activity.id === updatedActivity.id ? updatedData : activity)));
+      setData(
+        data.map((activity) =>
+          activity.id === updatedActivity.id ? updatedData : activity
+        )
+      );
       setOpen(false);
     }
   };
@@ -53,7 +73,15 @@ const [rowCount, setRowCount] = useState(0); // Tổng số bản ghi
   const handleListClick = async (activityId) => {
     const participantsData = await fetchList(activityId);
     if (participantsData) {
-      setParticipants(participantsData.data); // Assuming `data` is the key where participants are stored in the API response
+      const namesArray = [];
+      const Point = [];
+      for (let i = 0; i < participantsData.data.length; i++) {
+        const userdata = await fetchUserById(participantsData.data[i].id);
+        namesArray.push(userdata.username);
+        Point.push(participantsData.data[i].activity_points);
+      }
+
+      setParticipants(namesArray);
       setListOpen(true);
     }
   };
@@ -149,18 +177,18 @@ const [rowCount, setRowCount] = useState(0); // Tổng số bản ghi
             color: `${colors.greenAccent[200]} !important`,
           },
         }}
-      ><DataGrid
-      checkboxSelection
-      rows={data}
-      columns={columns}
-      pageSize={pageSize} // Số bản ghi trên mỗi trang
-      rowsPerPageOptions={[5, 10, 25]} // Các tùy chọn số bản ghi
-      rowCount={rowCount} // Tổng số bản ghi
-      paginationMode="server" // Sử dụng phân trang từ server
-      onPageChange={(newPage) => setPage(newPage)} // Cập nhật khi trang thay đổi
-      onPageSizeChange={(newPageSize) => setPageSize(newPageSize)} // Cập nhật số bản ghi trên mỗi trang
-    />
-    
+      >
+        <DataGrid
+          checkboxSelection
+          rows={data}
+          columns={columns}
+          pageSize={pageSize} // Số bản ghi trên mỗi trang
+          rowsPerPageOptions={[5, 10, 25]} // Các tùy chọn số bản ghi
+          rowCount={rowCount} // Tổng số bản ghi
+          paginationMode="server" // Sử dụng phân trang từ server
+          onPageChange={(newPage) => setPage(newPage)} // Cập nhật khi trang thay đổi
+          onPageSizeChange={(newPageSize) => setPageSize(newPageSize)} // Cập nhật số bản ghi trên mỗi trang
+        />
       </Box>
 
       {/* Dialog for Editing */}
@@ -171,7 +199,7 @@ const [rowCount, setRowCount] = useState(0); // Tổng số bản ghi
             margin="dense"
             label="From Date"
             name="from_date"
-            value={selectedActivity?.from_date || ''}
+            value={selectedActivity?.from_date || ""}
             onChange={handleInputChange}
             fullWidth
           />
@@ -179,7 +207,7 @@ const [rowCount, setRowCount] = useState(0); // Tổng số bản ghi
             margin="dense"
             label="To Date"
             name="to_date"
-            value={selectedActivity?.to_date || ''}
+            value={selectedActivity?.to_date || ""}
             onChange={handleInputChange}
             fullWidth
           />
@@ -187,7 +215,7 @@ const [rowCount, setRowCount] = useState(0); // Tổng số bản ghi
             margin="dense"
             label="Title"
             name="title"
-            value={selectedActivity?.title || ''}
+            value={selectedActivity?.title || ""}
             onChange={handleInputChange}
             fullWidth
           />
@@ -195,7 +223,7 @@ const [rowCount, setRowCount] = useState(0); // Tổng số bản ghi
             margin="dense"
             label="Description"
             name="description"
-            value={selectedActivity?.description || ''}
+            value={selectedActivity?.description || ""}
             onChange={handleInputChange}
             fullWidth
           />
@@ -204,7 +232,10 @@ const [rowCount, setRowCount] = useState(0); // Tổng số bản ghi
           <Button onClick={() => setOpen(false)} color="secondary">
             Cancel
           </Button>
-          <Button onClick={() => handleUpdate(selectedActivity)} color="secondary">
+          <Button
+            onClick={() => handleUpdate(selectedActivity)}
+            color="secondary"
+          >
             Save
           </Button>
         </DialogActions>
@@ -218,7 +249,7 @@ const [rowCount, setRowCount] = useState(0); // Tổng số bản ghi
             margin="dense"
             label="Type"
             name="type"
-            value={selectedActivity?.type || ''}
+            value={selectedActivity?.type || ""}
             fullWidth
             disabled
           />
@@ -226,7 +257,7 @@ const [rowCount, setRowCount] = useState(0); // Tổng số bản ghi
             margin="dense"
             label="From Date"
             name="from_date"
-            value={selectedActivity?.from_date || ''}
+            value={selectedActivity?.from_date || ""}
             fullWidth
             disabled
           />
@@ -234,7 +265,7 @@ const [rowCount, setRowCount] = useState(0); // Tổng số bản ghi
             margin="dense"
             label="To Date"
             name="to_date"
-            value={selectedActivity?.to_date || ''}
+            value={selectedActivity?.to_date || ""}
             fullWidth
             disabled
           />
@@ -242,7 +273,7 @@ const [rowCount, setRowCount] = useState(0); // Tổng số bản ghi
             margin="dense"
             label="Title"
             name="title"
-            value={selectedActivity?.title || ''}
+            value={selectedActivity?.title || ""}
             fullWidth
             disabled
           />
@@ -250,7 +281,7 @@ const [rowCount, setRowCount] = useState(0); // Tổng số bản ghi
             margin="dense"
             label="Description"
             name="description"
-            value={selectedActivity?.description || ''}
+            value={selectedActivity?.description || ""}
             fullWidth
             disabled
           />
@@ -270,8 +301,8 @@ const [rowCount, setRowCount] = useState(0); // Tổng số bản ghi
             participants.map((participant, index) => (
               <Box key={index} mb={2}>
                 <TextField
-                  label="User ID"
-                  value={participant.user_id || ''}
+                  label="Name Participant"
+                  value={participant || ""}
                   fullWidth
                   disabled
                 />
