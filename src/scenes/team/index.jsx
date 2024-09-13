@@ -32,6 +32,11 @@ const Team = () => {
     const isDeleted = await deleteUser(id);
     if (isDeleted) {
       setData(data.filter((user) => user.id !== id));
+      alert('Delete Successful');
+    }
+    else
+    {    
+      alert('Fail to delete');
     }
   };
 
@@ -40,7 +45,12 @@ const Team = () => {
     if (updatedData) {
       setData(data.map((user) => (user.id === updatedUser.id ? updatedData : user)));
       setOpen(false);
+      alert('Update Successful');
     }
+    else
+      {
+        alert('Fail to update');
+      }
   };
 
   const handleViewClick = async (id) => {
