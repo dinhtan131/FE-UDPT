@@ -1,41 +1,6 @@
 import React, { useState } from 'react';
 import { Box, Button, TextField, Grid, Paper, Typography } from '@mui/material';
-//import { fetchMyWorkLogsData } from '../../data/mockData'; // Adjust the path based on your project structure
-
-// Fetch function to get work logs within a specified date range
-export const fetchMyWorkLogsData = async (startDate, endDate) => {
-  const token = localStorage.getItem('accessToken');  // Retrieve token from localStorage
-
-  if (!token) {
-    throw new Error('No access token found. Please log in first.');
-  }
-
-  try {
-    const response = await fetch(`https://udpt-be.onrender.com/api/v1/work-logs/me/?start_date=${startDate}&end_date=${endDate}`, {
-      method: 'GET',
-      headers: {
-        'Authorization': `Bearer ${token}`,  // Attach token to header
-        'Content-Type': 'application/json'
-      }
-    });
-
-    console.log('Response object:', response);
-
-    if (!response.ok) {
-      const errorResponse = await response.text(); // Get error response as text
-      console.error('Error response:', errorResponse);
-      throw new Error('Failed to fetch work logs');
-    }
-
-    const data = await response.json();
-    console.log('Work logs response data:', data);  // Log data for debugging
-    return data;
-  } catch (error) {
-    console.error('Error fetching work logs:', error);
-    return null;
-  }
-};
-
+import { fetchMyWorkLogsData } from '../../data/mockData'; // Adjust the path based on your project structure
 // React component to display work logs
 const MyCheckInDashboard = () => {
   const [workLogs, setWorkLogs] = useState([]);
