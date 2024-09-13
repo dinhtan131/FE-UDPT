@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { createVoucher } from '../../data/mockData'; // Adjust the import path based on your project structure
-import { Box, Button, TextField, Typography } from '@mui/material';
+import { Box, Button, TextField, Typography, Select, MenuItem, InputLabel, FormControl } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 
 const CreateVoucher = () => {
@@ -8,7 +8,7 @@ const CreateVoucher = () => {
     require_point: '',
     title: '',
     description: '',
-    provider: '',
+    provider: 'Grab', // Default to "Grab"
     url: '',
   });
   const [error, setError] = useState(null);
@@ -31,7 +31,7 @@ const CreateVoucher = () => {
           require_point: '',
           title: '',
           description: '',
-          provider: '',
+          provider: 'Grab', // Reset to default after submission
           url: '',
         });
       } else {
@@ -122,25 +122,30 @@ const CreateVoucher = () => {
         }}
       />
 
-      <TextField
-        label="Provider"
-        name="provider"
-        value={formData.provider}
-        onChange={handleChange}
-        margin="normal"
-        fullWidth
-        required
-        InputLabelProps={{
-          style: { color: theme.palette.primary.main },
-        }}
-        InputProps={{
-          style: { color: '#000' }, // Change text color to black
-        }}
-        sx={{
-          backgroundColor: '#f0f0f0',
-          borderRadius: '5px',
-        }}
-      />
+      {/* Wrapped Select in FormControl for better styling */}
+      <FormControl fullWidth required sx={{ mt: 2 }}>
+        <InputLabel
+          id="provider-label"
+          sx={{ color: '#000' }} // Label color
+        >
+          Provider
+        </InputLabel>
+        <Select
+          labelId="provider-label"
+          name="provider"
+          value={formData.provider}
+          onChange={handleChange}
+          sx={{
+            backgroundColor: '#f0f0f0',
+            borderRadius: '5px',
+            color: '#000', // Text color inside the Select
+          }}
+        >
+          <MenuItem value="Grab">Grab</MenuItem>
+          <MenuItem value="Haidilao">Haidilao</MenuItem>
+          <MenuItem value="Highland">Highland</MenuItem>
+        </Select>
+      </FormControl>
 
       <TextField
         label="URL"
