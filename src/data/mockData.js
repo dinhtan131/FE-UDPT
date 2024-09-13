@@ -8,7 +8,7 @@ const API_VER = process.env.REACT_APP_API_VER;
 */
 // mockData.js
 
-const BASE_URL = "https://udpt-be.onrender.com";
+const BASE_URL = "https://un55jky373.execute-api.ap-southeast-1.amazonaws.com";
 const API_VER = "api/v1";
 
 //Login
