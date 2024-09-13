@@ -89,13 +89,26 @@ const Team = () => {
   };
 
   const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setSelectedUser((prevState) => ({
-      ...prevState,
-      [name]: value,
-    }));
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
   };
-  
+const handleUserInputChange = (e) => {
+  const { name, value } = e.target;
+  setSelectedUser((prevState) => ({
+    ...prevState,
+    [name]: value,
+  }));
+};
+
+const handleTransferInputChange = (e) => {
+  const { name, value } = e.target;
+  setFormData((prevState) => ({
+    ...prevState,
+    [name]: value,
+  }));
+};
 
   const columns = [
     { field: "id", headerName: "ID" },
@@ -198,7 +211,7 @@ const Team = () => {
             label="Full Name"
             name="full_name"
             value={selectedUser?.full_name || ''}
-            onChange={handleInputChange}
+            onChange={handleUserInputChange}
             fullWidth
           />
           <TextField
@@ -206,7 +219,7 @@ const Team = () => {
             label="Citizen_id"
             name="citizen_id"
             value={selectedUser?.citizen_id || ''}
-            onChange={handleInputChange}
+            onChange={handleUserInputChange}
             fullWidth
           />
           <TextField
@@ -214,7 +227,7 @@ const Team = () => {
             label="Bank Number"
             name="bank_number"
             value={selectedUser?.bank_number || ''}
-            onChange={handleInputChange}
+            onChange={handleUserInputChange}
             fullWidth
           />
           <TextField
@@ -222,7 +235,7 @@ const Team = () => {
             label="Tax ID"
             name="tax_id"
             value={selectedUser?.tax_id || ''}
-            onChange={handleInputChange}
+            onChange={handleUserInputChange}
             fullWidth
           />
         </DialogContent>
@@ -314,7 +327,7 @@ const Team = () => {
             name="points"
             type="number"
             value={formData.points}
-            onChange={handleInputChange}
+            onChange={handleTransferInputChange}
             margin="normal"
             fullWidth
             required
@@ -323,7 +336,7 @@ const Team = () => {
             label="Description"
             name="description"
             value={formData.description}
-            onChange={handleInputChange}
+            onChange={handleTransferInputChange}
             margin="normal"
             fullWidth
             required
