@@ -176,14 +176,6 @@ const ManageTickets = () => {
           />
           <TextField
             margin="dense"
-            label="Title"
-            name="title"
-            value={selectedTicket?.title || ''}
-            fullWidth
-            disabled
-          />
-          <TextField
-            margin="dense"
             label="Description"
             name="description"
             value={selectedTicket?.description || ''}
