@@ -368,7 +368,6 @@ export const UpdateMyTimeSheet = async (TimeSheetData) => {
 //View Team
 export const fetchTeamData = async (page = 1, limit = 10) => {
   try {
-    // Retrieve the access token from local storage
     const accessToken = localStorage.getItem("accessToken");
 
     if (!accessToken) {
@@ -376,11 +375,11 @@ export const fetchTeamData = async (page = 1, limit = 10) => {
     }
 
     const response = await fetch(
-      `${BASE_URL}/${API_VER}/users/?page=${page}&limit=${limit}`,
+      `${BASE_URL}/${API_VER}/users/?page=${page}&limit=${limit}`, // Sử dụng page và limit
       {
         method: "GET",
         headers: {
-          Authorization: `Bearer ${accessToken}`, // Include the access token in the Authorization header
+          Authorization: `Bearer ${accessToken}`, 
           "Content-Type": "application/json",
         },
       }
@@ -391,10 +390,13 @@ export const fetchTeamData = async (page = 1, limit = 10) => {
     }
 
     const result = await response.json();
-    return result.data; // Assuming the API response has a 'data' key
+    return {
+      users: result.data,    // Trả về users
+      total: result.total,   // Trả về tổng số lượng bản ghi
+    };
   } catch (error) {
     console.error("Error fetching team data:", error);
-    return []; // Return an empty array in case of error
+    return { users: [], total: 0 }; // Trả về giá trị mặc định
   }
 };
 
