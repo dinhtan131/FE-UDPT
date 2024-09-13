@@ -3,7 +3,7 @@ import { Box, Button, useTheme, Dialog, DialogActions, DialogContent, DialogTitl
 import { DataGrid } from "@mui/x-data-grid";
 import { tokens } from "../../theme";
 import Header from "../../components/Header";
-import { fetchTeamData, deleteUser, updateUser, fetchUserById } from "../../data/mockData"; // Import fetchUserById từ api.js
+import { fetchTeamData, deleteUser, updateUser, fetchUserById, createPointTransfer } from "../../data/mockData"; 
 
 const Team = () => {
   const theme = useTheme();
@@ -12,6 +12,8 @@ const Team = () => {
   const [open, setOpen] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
   const [viewOpen, setViewOpen] = useState(false);
+  const [transferOpen, setTransferOpen] = useState(false); // New state for Point Transfer
+  const [formData, setFormData] = useState({ points: '', description: '' }); // State for transfer form
 
   useEffect(() => {
     const getData = async () => {
@@ -38,7 +40,7 @@ const Team = () => {
   };
 
   const handleViewClick = async (id) => {
-    const user = await fetchUserById(id); // Fetch user data by ID
+    const user = await fetchUserById(id);
     setSelectedUser(user);
     setViewOpen(true);
   };
@@ -48,55 +50,55 @@ const Team = () => {
     setOpen(true);
   };
 
+  const handleTransferClick = (user) => {
+    setSelectedUser(user);
+    setFormData({ points: '', description: '' });
+    setTransferOpen(true);
+  };
+
+  const handleTransferSubmit = async () => {
+    try {
+      const response = await createPointTransfer({
+        to_user_id: selectedUser.id, // Automatically use selected user's ID
+        points: formData.points,
+        description: formData.description,
+      });
+      if (response) {
+        alert('Point transfer created successfully!');
+        setTransferOpen(false);
+      } else {
+        alert('Failed to create point transfer.');
+      }
+    } catch (error) {
+      console.error('Error creating point transfer:', error);
+    }
+  };
+
   const handleInputChange = (e) => {
-    setSelectedUser({
-      ...selectedUser,
+    setFormData({
+      ...formData,
       [e.target.name]: e.target.value,
     });
   };
 
   const columns = [
     { field: "id", headerName: "ID" },
-    
+    { field: "full_name", headerName: "Full Name", flex: 0.5 },
+    { field: "username", headerName: "User Name", flex: 0.5, cellClassName: "name-column--cell" },
+    { field: "role", headerName: "Role", flex: 0.25 },
+    { field: "bonus_point", headerName: "Bonus Point", align: "left", flex: 0.25 },
     {
-      field: "full_name",
-      headerName: "Full Name",
-      flex: 1,
-    },
-    {
-      field: "username",
-      headerName: "User Name",
-      flex: 0.5,
-      cellClassName: "name-column--cell",
-    },
-    
-    {
-      field: "role",
-      headerName: "Role",
-      flex: 0.5,
-    },
-    {
-      field: "bonus_point",
-      headerName: "Bonus Point",
-      align: "left",
-      flex: 0.5,
-    },
-    {
-      field: "actions",
-      headerName: "Actions",
-      flex: 1,
+      field: "actions", headerName: "Actions", flex: 1,
       renderCell: (params) => (
         <Box>
           <Button
             variant="contained"
             color="info"
-            onClick={() => handleViewClick(params.row.id)} // Trigger view dialog
+            onClick={() => handleViewClick(params.row.id)}
             sx={{ marginRight: 1 }}
-
           >
             View
           </Button>
-
           <Button
             variant="contained"
             color="primary"
@@ -105,7 +107,6 @@ const Team = () => {
           >
             Edit
           </Button>
-
           <Button
             variant="contained"
             color="secondary"
@@ -114,8 +115,13 @@ const Team = () => {
           >
             Delete
           </Button>
-          
-          
+          <Button
+            variant="contained"
+            color="success"
+            onClick={() => handleTransferClick(params.row)}
+          >
+            Point Transfer
+          </Button>
         </Box>
       ),
     },
@@ -149,9 +155,8 @@ const Team = () => {
             backgroundColor: colors.blueAccent[700],
           },
           "& .MuiCheckbox-root": {
-            color: `${colors.greenAccent[200]} !important`, // Fixed syntax
+            color: `${colors.greenAccent[200]} !important`,
           },
-
         }}
       >
         <DataGrid checkboxSelection rows={data} columns={columns} />
@@ -163,25 +168,9 @@ const Team = () => {
         <DialogContent>
           <TextField
             margin="dense"
-            label="ID"
-            name="id"
-            value={selectedUser?.id || ''}
-            onChange={handleInputChange}
-            fullWidth
-          />
-          <TextField
-            margin="dense"
             label="Full Name"
             name="full_name"
             value={selectedUser?.full_name || ''}
-            onChange={handleInputChange}
-            fullWidth
-          />
-          <TextField
-            margin="dense"
-            label="Username"
-            name="username"
-            value={selectedUser?.username || ''}
             onChange={handleInputChange}
             fullWidth
           />
@@ -206,23 +195,6 @@ const Team = () => {
             label="Tax ID"
             name="tax_id"
             value={selectedUser?.tax_id || ''}
-            onChange={handleInputChange}
-            fullWidth
-          />
-          <TextField
-            margin="dense"
-            label="Role"
-            name="role"
-            value={selectedUser?.role || ''}
-            onChange={handleInputChange}
-            fullWidth
-          />
-          
-          <TextField
-            margin="dense"
-            label="Bonus Point"
-            name="bonus_point"
-            value={selectedUser?.bonus_point || ''}
             onChange={handleInputChange}
             fullWidth
           />
@@ -289,10 +261,53 @@ const Team = () => {
             fullWidth
             disabled
           />
+          <TextField
+            margin="dense"
+            label="Bonus Point"
+            name="bonus_point"
+            value={selectedUser?.bonus_point || ''}
+            fullWidth
+            disabled
+          />
         </DialogContent>
         <DialogActions>
           <Button onClick={() => setViewOpen(false)} color="secondary">
-            Close
+            Cancel
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+      {/* Dialog for Point Transfer */}
+ {/* Dialog for Point Transfer */}
+ <Dialog open={transferOpen} onClose={() => setTransferOpen(false)}>
+        <DialogTitle>Point Transfer</DialogTitle>
+        <DialogContent>
+          <TextField
+            label="Points"
+            name="points"
+            type="number"
+            value={formData.points}
+            onChange={handleInputChange}
+            margin="normal"
+            fullWidth
+            required
+          />
+          <TextField
+            label="Description"
+            name="description"
+            value={formData.description}
+            onChange={handleInputChange}
+            margin="normal"
+            fullWidth
+            required
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setTransferOpen(false)} color="secondary">
+            Cancel
+          </Button>
+          <Button onClick={handleTransferSubmit} color="secondary">
+            Submit
           </Button>
         </DialogActions>
       </Dialog>
