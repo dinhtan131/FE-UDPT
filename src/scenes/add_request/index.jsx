@@ -1,4 +1,4 @@
-import { Box, Button, TextField } from "@mui/material";
+import { Box, Button, TextField, Select, MenuItem, FormControl, InputLabel } from "@mui/material";
 import { Formik } from "formik";
 import * as yup from "yup";
 import useMediaQuery from "@mui/material/useMediaQuery";
@@ -23,12 +23,11 @@ const NewTicketForm = () => {
       const createdTicket = await createTicket(ticketData);
       if (createdTicket) {
         console.log("Ticket created successfully:", createdTicket);
-        alert('Ticket created successfully!');
+        alert('Ticket created successfully');
         resetForm(); // Reset form fields after successful submission
       } else {
         console.error("Failed to create ticket");
-        alert('Failed to create ticket!');
-
+        alert('Failed to create ticket');
       }
     } catch (error) {
       console.error("Error during ticket creation:", error);
@@ -51,6 +50,7 @@ const NewTicketForm = () => {
           handleBlur,
           handleChange,
           handleSubmit,
+          setFieldValue, // To set the field value programmatically
         }) => (
           <form onSubmit={handleSubmit}>
             <Box
@@ -75,20 +75,23 @@ const NewTicketForm = () => {
                 helperText={touched.userId && errors.userId}
                 sx={{ gridColumn: "span 4" }}
               />
-              <TextField
-                fullWidth
-                variant="filled"
-                type="text"
-                label="Type"
-                onBlur={handleBlur}
-                onChange={handleChange}
-                value={values.type}
-                name="type"
-                color="secondary"
-                error={!!touched.type && !!errors.type}
-                helperText={touched.type && errors.type}
-                sx={{ gridColumn: "span 4" }}
-              />
+              <FormControl fullWidth variant="filled" sx={{ gridColumn: "span 4" }}>
+                <InputLabel>Type</InputLabel>
+                <Select
+                  label="Type"
+                  name="type"
+                  value={values.type}
+                  onChange={(e) => setFieldValue("type", e.target.value)}
+                  onBlur={handleBlur}
+                  color="secondary"
+                  error={!!touched.type && !!errors.type}
+                >
+                  <MenuItem value="WFH">WFH</MenuItem>
+                  <MenuItem value="Leave">Leave</MenuItem>
+                  <MenuItem value="Late">Late</MenuItem>
+                </Select>
+                {touched.type && errors.type && <div>{errors.type}</div>}
+              </FormControl>
               <TextField
                 fullWidth
                 variant="filled"
@@ -147,7 +150,7 @@ const NewTicketForm = () => {
 // Validation schema
 const ticketSchema = yup.object().shape({
   userId: yup.number().required("User ID is required"),
-  type: yup.string().required("Type is required"),
+  type: yup.string().oneOf(["WFH", "Leave", "Late"], "Invalid type").required("Type is required"),
   fromDate: yup.string().required("From Date is required"),
   toDate: yup.string().required("To Date is required"),
   description: yup.string().required("Description is required"),
