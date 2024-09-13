@@ -663,7 +663,10 @@ export const fetchTicketsData = async (page = 1, limit = 10) => {
     );
 
     const result = await response.json();
-    return result.data;
+    return {
+      users: result.data,  
+      total: result.total,
+    };
   } catch (error) {
     console.error("Error fetching tickets data:", error);
     return [];
