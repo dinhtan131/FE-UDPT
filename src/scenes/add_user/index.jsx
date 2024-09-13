@@ -20,9 +20,11 @@ const NewUserForm = () => {
       const createdUser = await createUser(userData);
       if (createdUser) {
         console.log("User created successfully:", createdUser);
+        alert('User created successfully!');
         resetForm(); // Reset form fields after successful submission
       } else {
         console.error("Failed to create user");
+        alert('Failed to create user!');
       }
     } catch (error) {
       console.error("Error during user creation:", error);
