@@ -76,10 +76,7 @@ function App() {
               <Route path="/admin/add_voucher" element={<AddVoucher />} />
               <Route path="/admin/exchange" element={<Exchange />} />
               <Route path="/admin/point_transfer" element={<PointTransfer />} />
-              <Route
-                path="/admin/add_point_transfer"
-                element={<AddPoinTrasnfer />}
-              />
+              <Route path="/admin/add_point_transfer" element={<AddPoinTrasnfer />} />
               <Route path="/admin/work_log" element={<WorkLog />} />
               <Route path="/admin/my_time_sheet" element={<MyTimeSheet />} />
               <Route path="/admin/time_sheet" element={<TimeSheet />} />
