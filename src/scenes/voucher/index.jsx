@@ -134,14 +134,6 @@ const ManageVouchers = () => {
         <DialogContent>
           <TextField
             margin="dense"
-            label="Type"
-            name="provider"
-            value={selectedVoucher?.provider || ''}
-            onChange={handleInputChange}
-            fullWidth
-          />
-          <TextField
-            margin="dense"
             label="Title"
             name="title"
             value={selectedVoucher?.title || ''}
