@@ -11,15 +11,18 @@ const ManageVouchers = () => {
     const [selectedVoucher, setSelectedVoucher] = useState(null);
     const [viewOpen, setViewOpen] = useState(false);
     const [exchangeSuccess, setExchangeSuccess] = useState(null);
-  
+    const [page, setPage] = useState(0); // Trang hiện tại
+    const [pageSize, setPageSize] = useState(10); // Số lượng bản ghi trên mỗi trang
+    const [rowCount, setRowCount] = useState(0); // Tổng số bản ghi
     useEffect(() => {
       const getData = async () => {
-        const vouchersData = await fetchVouchersData();
-        setData(vouchersData);
+        const vouchersData = await fetchVouchersData(page + 1, pageSize); // Gọi API với phân trang
+        setData(vouchersData.users); // Cập nhật danh sách người dùng
+        setRowCount(vouchersData.total); // Cập nhật tổng số bản ghi
       };
-  
+    
       getData();
-    }, []);
+    }, [page, pageSize]); // Gọi lại khi page hoặc pageSize thay đổi
   
     const handleViewClick = async (id) => {
       const voucher = await fetchVoucherById(id);
@@ -117,8 +120,17 @@ const ManageVouchers = () => {
               color: `${colors.greenAccent[200]} !important`,
             },
           }}
-        >
-          <DataGrid checkboxSelection rows={data} columns={columns} />
+        >        <DataGrid
+        checkboxSelection
+        rows={data}
+        columns={columns}
+        pageSize={pageSize} // Số bản ghi trên mỗi trang
+        rowsPerPageOptions={[5, 10, 25]} // Các tùy chọn số bản ghi
+        rowCount={rowCount} // Tổng số bản ghi
+        paginationMode="server" // Sử dụng phân trang từ server
+        onPageChange={(newPage) => setPage(newPage)} // Cập nhật khi trang thay đổi
+        onPageSizeChange={(newPageSize) => setPageSize(newPageSize)} // Cập nhật số bản ghi trên mỗi trang
+      />
         </Box>
         {/* Dialog for Viewing */}
         <Dialog open={viewOpen} onClose={() => setViewOpen(false)}>
