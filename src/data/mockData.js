@@ -1,6 +1,7 @@
 /*
 //File ENV
 REACT_APP_BASE_URL=https://udpt-be.onrender.com
+https://un55jky373.execute-api.ap-southeast-1.amazonaws.com
 REACT_APP_API_VER=api/v1
 // 
 const BASE_URL = process.env.REACT_APP_BASE_URL;
