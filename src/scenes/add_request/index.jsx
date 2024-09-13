@@ -23,9 +23,12 @@ const NewTicketForm = () => {
       const createdTicket = await createTicket(ticketData);
       if (createdTicket) {
         console.log("Ticket created successfully:", createdTicket);
+        alert('Ticket created successfully!');
         resetForm(); // Reset form fields after successful submission
       } else {
         console.error("Failed to create ticket");
+        alert('Failed to create ticket!');
+
       }
     } catch (error) {
       console.error("Error during ticket creation:", error);
