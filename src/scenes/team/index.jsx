@@ -10,6 +10,9 @@ const Team = () => {
   const colors = tokens(theme.palette.mode);
   const [data, setData] = useState([]);
   const [open, setOpen] = useState(false);
+  const [page, setPage] = useState(0); // Trang hiện tại
+  const [pageSize, setPageSize] = useState(10); // Số lượng bản ghi trên mỗi trang
+  const [rowCount, setRowCount] = useState(0); // Tổng số bản ghi
   const [selectedUser, setSelectedUser] = useState(null);
   const [viewOpen, setViewOpen] = useState(false);
   const [transferOpen, setTransferOpen] = useState(false); // New state for Point Transfer
@@ -17,12 +20,13 @@ const Team = () => {
 
   useEffect(() => {
     const getData = async () => {
-      const teamData = await fetchTeamData();
-      setData(teamData);
+      const teamData = await fetchTeamData(page + 1, pageSize); // Gọi API với phân trang
+      setData(teamData.users); // Cập nhật danh sách người dùng
+      setRowCount(teamData.total); // Cập nhật tổng số bản ghi
     };
-
+  
     getData();
-  }, []);
+  }, [page, pageSize]);
 
   const handleDelete = async (id) => {
     const isDeleted = await deleteUser(id);
@@ -159,7 +163,18 @@ const Team = () => {
           },
         }}
       >
-        <DataGrid checkboxSelection rows={data} columns={columns} />
+        <DataGrid
+  checkboxSelection
+  rows={data}
+  columns={columns}
+  pageSize={pageSize} // Số bản ghi trên mỗi trang
+  rowsPerPageOptions={[5, 10, 25]} // Các tùy chọn số bản ghi
+  rowCount={rowCount} // Tổng số bản ghi
+  paginationMode="server" // Sử dụng phân trang từ server
+  onPageChange={(newPage) => setPage(newPage)} // Cập nhật khi trang thay đổi
+  onPageSizeChange={(newPageSize) => setPageSize(newPageSize)} // Cập nhật số bản ghi trên mỗi trang
+/>
+
       </Box>
 
       {/* Dialog for Editing */}
