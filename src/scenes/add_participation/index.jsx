@@ -11,16 +11,20 @@ const ManageActivities = () => {
   const [data, setData] = useState([]);
   const [selectedActivity, setSelectedActivity] = useState(null);
   const [viewOpen, setViewOpen] = useState(false);
+  const [page, setPage] = useState(0); // Trang hiện tại
+const [pageSize, setPageSize] = useState(10); // Số lượng bản ghi trên mỗi trang
+const [rowCount, setRowCount] = useState(0); // Tổng số bản ghi
 
-  useEffect(() => {
-    const getData = async () => {
-      const activitiesData = await fetchActivitiesData();
-      setData(activitiesData);
-    };
 
-    getData();
-  }, []);
+useEffect(() => {
+  const getData = async () => {
+    const activitiesData = await fetchActivitiesData(page + 1, pageSize); // Gọi API với phân trang
+    setData(activitiesData.users); // Cập nhật danh sách người dùng
+    setRowCount(activitiesData.total); // Cập nhật tổng số bản ghi
+  };
 
+  getData();
+}, [page, pageSize]); // Gọi lại khi page hoặc pageSize thay đổi
 
   const handleViewClick = async (id) => {
     const activity = await fetchActivityById(id);
@@ -91,7 +95,7 @@ const ManageActivities = () => {
 
   return (
     <Box m="20px">
-      <Header title="ACTIVITIES" subtitle="Managing Activities" />
+      <Header title="ACTIVITIES" subtitle="Join Activities" />
       <Box
         m="40px 0 0 0"
         height="75vh"
@@ -120,8 +124,18 @@ const ManageActivities = () => {
             color: `${colors.greenAccent[200]} !important`,
           },
         }}
-      >
-        <DataGrid checkboxSelection rows={data} columns={columns} />
+      >      
+      <DataGrid
+      checkboxSelection
+      rows={data}
+      columns={columns}
+      pageSize={pageSize} // Số bản ghi trên mỗi trang
+      rowsPerPageOptions={[5, 10, 25]} // Các tùy chọn số bản ghi
+      rowCount={rowCount} // Tổng số bản ghi
+      paginationMode="server" // Sử dụng phân trang từ server
+      onPageChange={(newPage) => setPage(newPage)} // Cập nhật khi trang thay đổi
+      onPageSizeChange={(newPageSize) => setPageSize(newPageSize)} // Cập nhật số bản ghi trên mỗi trang
+    />
       </Box>
 
 
