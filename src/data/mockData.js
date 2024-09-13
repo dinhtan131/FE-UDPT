@@ -821,7 +821,10 @@ export const fetchVouchersData = async (page = 1, limit = 10) => {
     );
 
     const result = await response.json();
-    return result.data;
+    return {
+      users: result.data,    // Trả về users
+      total: result.total,   // Trả về tổng số lượng bản ghi
+    };
   } catch (error) {
     console.error("Error fetching vouchers data:", error);
     return [];
