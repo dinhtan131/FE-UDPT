@@ -13,6 +13,7 @@ import MyParticipation from "./scenes/my_participation";
 import MyCheckIn from "./scenes/my_check_in";
 import Team from "./scenes/team";
 import Activities from "./scenes/activities";
+import PointTransfer from "./scenes/point_transfer";
 import Voucher from "./scenes/voucher";
 import Exchange from "./scenes/exchange";
 import WorkLog from "./scenes/work_log";
@@ -74,6 +75,7 @@ function App() {
               <Route path="/admin/voucher" element={<Voucher />} />
               <Route path="/admin/add_voucher" element={<AddVoucher />} />
               <Route path="/admin/exchange" element={<Exchange />} />
+              <Route path="/admin/point_transfer" element={<PointTransfer />} />
               <Route path="/admin/add_point_transfer" element={<AddPoinTrasnfer />} />
               <Route path="/admin/work_log" element={<WorkLog />} />
               <Route path="/admin/my_time_sheet" element={<MyTimeSheet />} />
