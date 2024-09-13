@@ -10,19 +10,25 @@ const ManageTickets = () => {
   const colors = tokens(theme.palette.mode);
   const [data, setData] = useState([]);
   const [viewOpen, setViewOpen] = useState(false);
+  const [page, setPage] = useState(0); // Trang hiện tại
+  const [pageSize, setPageSize] = useState(10); // Số lượng bản ghi trên mỗi trang
+  const [rowCount, setRowCount] = useState(0); // Tổng số bản ghi
+
   const [selectedTicket, setSelectedTicket] = useState(null);
   const [userId, setUserId] = useState(""); // State for user ID
   const [userData, setUserData] = useState([]); // State for storing fetched user data
 
+
   useEffect(() => {
     const getData = async () => {
-      const ticketsData = await fetchTicketsData();
-      setData(ticketsData);
+      const ticketsData = await fetchTicketsData(page + 1, pageSize);
+      setData(ticketsData.users);
+      setRowCount(ticketsData.total); 
     };
-
+  
     getData();
-  }, []);
-
+  }, [page, pageSize]);
+  
   const handleStatusUpdate = async (ticket, status) => {
     const updatedTicket = { ...ticket, status };
     const updatedData = await updateTicket(ticket.id, updatedTicket);
@@ -143,7 +149,18 @@ const ManageTickets = () => {
           },
         }}
       >
-        <DataGrid checkboxSelection rows={userData.length > 0 ? userData : data} columns={columns} />
+    <DataGrid
+      checkboxSelection
+      rows={data}
+      columns={columns}
+      pageSize={pageSize} // Số bản ghi trên mỗi trang
+      rowsPerPageOptions={[5, 10, 25]} // Các tùy chọn số bản ghi
+      rowCount={rowCount} // Tổng số bản ghi
+      paginationMode="server" // Sử dụng phân trang từ server
+      onPageChange={(newPage) => setPage(newPage)} // Cập nhật khi trang thay đổi
+      onPageSizeChange={(newPageSize) => setPageSize(newPageSize)} // Cập nhật số bản ghi trên mỗi trang
+    />
+
       </Box>
 
       {/* Dialog for Viewing */}
