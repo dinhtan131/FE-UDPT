@@ -152,14 +152,6 @@ const ManageActivities = () => {
         <DialogContent>
           <TextField
             margin="dense"
-            label="Type"
-            name="type"
-            value={selectedActivity?.type || ''}
-            onChange={handleInputChange}
-            fullWidth
-          />
-          <TextField
-            margin="dense"
             label="From Date"
             name="from_date"
             value={selectedActivity?.from_date || ''}
