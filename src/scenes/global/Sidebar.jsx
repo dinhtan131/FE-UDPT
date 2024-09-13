@@ -15,6 +15,7 @@ import TrackChanges from "@mui/icons-material/TrackChanges";
 import Check from "@mui/icons-material/Check";
 import VolunteerActivism from "@mui/icons-material/VolunteerActivism";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
+//import SyncAltIcon from "@mui/icons-material/SyncAlt";
 
 import CurrencyExchange from "@mui/icons-material/CurrencyExchange";
 
@@ -163,15 +164,6 @@ const Sidebar = () => {
               selected={selected}
               setSelected={setSelected}
             />
-
-            <Item
-              title="Timesheet Management"
-              to="/admin/time_sheet"
-              icon={<AccessTimeIcon />}
-              selected={selected}
-              setSelected={setSelected}
-            />
-
             <Item
               title="Add User"
               to="/admin/add_user"
@@ -179,7 +171,6 @@ const Sidebar = () => {
               selected={selected}
               setSelected={setSelected}
             />
-
             <Typography
               variant="h6"
               color={colors.grey[300]}
@@ -273,10 +264,18 @@ const Sidebar = () => {
               selected={selected}
               setSelected={setSelected}
             />
+
+            <Typography
+              variant="h6"
+              color={colors.grey[300]}
+              sx={{ m: "15px 0 5px 20px" }}
+            >
+              Manage Time Sheet
+            </Typography>
             <Item
-              title="Add Activity"
-              to="/admin/add_point_transfer"
-              icon={<AddOutlined />}
+              title="Timesheet Management"
+              to="/admin/time_sheet"
+              icon={<AccessTimeIcon />}
               selected={selected}
               setSelected={setSelected}
             />
