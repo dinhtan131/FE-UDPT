@@ -287,8 +287,7 @@ export const fetchMyWorkLogsData = async (startDate, endDate) => {
   }
 
   try {
-    const response = await fetch(
-      `https://udpt-be.onrender.com/api/v1/work-logs/me/?start_date=${startDate}&end_date=${endDate}`,
+    const response = await fetch(`${BASE_URL}/${API_VER}/work-logs/me/?start_date=${startDate}&end_date=${endDate}`,
       {
         method: "GET",
         headers: {
@@ -312,6 +311,7 @@ export const fetchMyWorkLogsData = async (startDate, endDate) => {
     return null;
   }
 };
+
 
 // My Time Sheet
 export const getMyTimeSheet = async () => {
